@@ -1,26 +1,20 @@
 import React, { use } from "react";
 import { Link, NavLink } from "react-router";
 import { AuthContext } from "../context/AuthContext";
-// Assume you have an AuthContext file like this
 
 const Navbar = () => {
-  // Get authentication state and functions from context
   const { user, loading, signOutUser } = use(AuthContext);
 
-  // Handle the logout process
   const handleLogout = () => {
     signOutUser()
       .then(() => {
-        // You can show a success toast here
         console.log("User logged out successfully");
       })
       .catch((error) => {
-        // You can show an error toast here
         console.error("Logout error:", error);
       });
   };
 
-  // Navigation links for reuse in mobile and desktop menus
   const navLinks = (
     <>
       <li>
@@ -43,10 +37,8 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar bg-base-100 shadow-md px-4">
-      {/* 1. Navbar Start (Logo + Mobile Hamburger) */}
+    <div className="w-11/12 mx-auto navbar bg-base-100 shadow-md">
       <div className="navbar-start">
-        {/* Mobile Dropdown Menu */}
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
             <svg
@@ -72,24 +64,19 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {/* Website Name / Logo */}
         <Link to="/" className="btn btn-ghost text-xl font-bold">
           HabitTracker
         </Link>
       </div>
 
-      {/* 2. Navbar Center (Desktop Links) */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{navLinks}</ul>
       </div>
 
-      {/* 3. Navbar End (User/Login Buttons) */}
       <div className="navbar-end">
-        {/* Show a spinner while auth state is loading */}
         {loading ? (
           <span className="loading loading-spinner loading-md"></span>
         ) : user ? (
-          // If user is logged IN, show avatar dropdown
           <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
@@ -119,7 +106,6 @@ const Navbar = () => {
             </ul>
           </div>
         ) : (
-          // If user is logged OUT, show Login/Signup
           <div className="flex gap-2">
             <Link to="/login" className="btn btn-primary btn-sm">
               Login
