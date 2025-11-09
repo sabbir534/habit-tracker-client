@@ -1,35 +1,30 @@
-// src/components/Home/HowItWorks.jsx
-
 import React from "react";
 import { motion } from "framer-motion";
 import { FaPlusSquare, FaCheckSquare, FaChartLine } from "react-icons/fa";
 
-// --- Animation Variants ---
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.3, // Each child will appear 0.3s after the previous one
+      staggerChildren: 0.3,
     },
   },
 };
 
 const stepVariants = {
-  hidden: { opacity: 0, y: 50 }, // Start 50px below
+  hidden: { opacity: 0, y: 50 },
   visible: {
     opacity: 1,
-    y: 0, // Animate to original position
+    y: 0,
     transition: { type: "spring", stiffness: 80 },
   },
 };
-// ---
 
 const HowItWorks = () => {
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
-        {/* Section Title */}
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold">
             Start Your Journey in 3 Easy Steps
@@ -39,7 +34,6 @@ const HowItWorks = () => {
           </p>
         </div>
 
-        {/* 1. Add 'motion' props to the grid container */}
         <motion.div
           className="grid grid-cols-1 md:grid-cols-3 gap-10"
           variants={containerVariants}
@@ -47,8 +41,6 @@ const HowItWorks = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
-          {/* Step 1: Create */}
-          {/* 2. Add 'motion' props to each grid item */}
           <motion.div variants={stepVariants} className="text-center">
             <div className="flex justify-center mb-4">
               <span className="text-6xl text-primary">
@@ -61,7 +53,6 @@ const HowItWorks = () => {
             </p>
           </motion.div>
 
-          {/* Step 2: Track */}
           <motion.div variants={stepVariants} className="text-center">
             <div className="flex justify-center mb-4">
               <span className="text-6xl text-secondary">
@@ -75,7 +66,6 @@ const HowItWorks = () => {
             </p>
           </motion.div>
 
-          {/* Step 3: Succeed */}
           <motion.div variants={stepVariants} className="text-center">
             <div className="flex justify-center mb-4">
               <span className="text-6xl text-accent">
