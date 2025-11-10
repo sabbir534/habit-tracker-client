@@ -1,11 +1,8 @@
-// src/pages/BrowsePublicHabits/BrowsePublicHabits.jsx
-
 import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
 import HabitCard from "../components/HabitCard";
 
-// --- Animation Variants ---
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -24,14 +21,12 @@ const BrowsePublicHabits = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // --- Search & Filter State ---
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
   const categories = ["All", "Morning", "Work", "Fitness", "Evening", "Study"];
 
-  // --- Fetch all public habits once ---
   useEffect(() => {
     const fetchAllPublicHabits = async () => {
       setLoading(true);
@@ -48,8 +43,6 @@ const BrowsePublicHabits = () => {
     };
     fetchAllPublicHabits();
   }, []);
-
-  // --- Debounce the search input (300ms delay) ---
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchTerm.trim());
@@ -57,7 +50,6 @@ const BrowsePublicHabits = () => {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  // --- Compute filtered habits dynamically ---
   const filteredHabits = useMemo(() => {
     return allHabits.filter((habit) => {
       const title = habit.title?.toLowerCase() || "";
@@ -79,7 +71,6 @@ const BrowsePublicHabits = () => {
 
   return (
     <div className="container mx-auto px-4 py-12 min-h-[calc(100vh-200px)]">
-      {/* --- Page Title --- */}
       <div className="text-center mb-10">
         <h1 className="text-4xl md:text-5xl font-bold">Browse Public Habits</h1>
         <p className="mt-2 text-lg text-base-content/70">
@@ -87,9 +78,7 @@ const BrowsePublicHabits = () => {
         </p>
       </div>
 
-      {/* --- Search & Filter Bar --- */}
       <div className="flex flex-col md:flex-row gap-4 mb-8 p-6 bg-base-200 rounded-lg shadow-md">
-        {/* Search Input */}
         <div className="form-control flex-1">
           <label className="label-text mb-2 font-semibold">
             Search by keyword
@@ -108,7 +97,6 @@ const BrowsePublicHabits = () => {
           </div>
         </div>
 
-        {/* Category Dropdown */}
         <motion.div
           layout
           className="form-control flex-1 md:max-w-xs"
@@ -131,26 +119,23 @@ const BrowsePublicHabits = () => {
         </motion.div>
       </div>
 
-      {/* --- Loading State --- */}
       {loading && (
         <div className="text-center py-10">
           <span className="loading loading-spinner loading-lg text-primary"></span>
         </div>
       )}
 
-      {/* --- Error State --- */}
       {error && (
         <div role="alert" className="alert alert-error max-w-xl mx-auto">
           <span>Error: {error}</span>
         </div>
       )}
 
-      {/* --- Habits Grid (Animated) --- */}
       {!loading && !error && (
         <AnimatePresence mode="wait">
           {filteredHabits.length > 0 ? (
             <motion.div
-              key={selectedCategory + debouncedSearch} // ensures re-animation
+              key={selectedCategory + debouncedSearch}
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
               variants={containerVariants}
               initial="hidden"

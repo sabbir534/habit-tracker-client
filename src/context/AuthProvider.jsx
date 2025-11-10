@@ -41,15 +41,11 @@ const AuthProvider = ({ children }) => {
       displayName: displayName,
       photoURL: photoURL,
     }).then(() => {
-      // **THIS IS THE FIX:**
-      // After the Firebase profile is updated,
-      // manually update the user state in your React context.
       setUser((prevUser) => ({
-        ...prevUser, // Keep old info (like email, uid)
-        displayName: displayName, // Add the new displayName
-        photoURL: photoURL, // Add the new photoURL
+        ...prevUser,
+        displayName: displayName,
+        photoURL: photoURL,
       }));
-      console.log("Context state updated with displayName.");
     });
   };
 
@@ -61,15 +57,28 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      // console.log(currentUser)
-      setLoading(false);
+
+      if (currentUser) {
+        currentUser
+          .getIdToken(true)
+          .then((idToken) => {
+            localStorage.setItem("access-token", idToken);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.error("Could not get Firebase ID token:", err);
+            setLoading(false);
+          });
+      } else {
+        localStorage.removeItem("access-token");
+        setLoading(false);
+      }
     });
 
     return () => {
       unsubscribe();
     };
   }, []);
-
   const authInfo = {
     createUser,
     updateUserProfile,
@@ -79,7 +88,10 @@ const AuthProvider = ({ children }) => {
     user,
     loading,
   };
-  return <AuthContext value={authInfo}>{children}</AuthContext>;
+
+  return (
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;

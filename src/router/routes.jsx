@@ -5,6 +5,8 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import NotFound from "../pages/NotFound";
 import BrowsePublicHabits from "../pages/BrowsePublicHabits";
+import AddHabit from "../pages/AddHabit";
+import PrivateRoute from "./PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -18,6 +20,14 @@ export const router = createBrowserRouter([
       {
         path: "/public-habits",
         element: <BrowsePublicHabits />,
+      },
+      {
+        path: "/add-habit",
+        element: (
+          <PrivateRoute>
+            <AddHabit />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/login",
