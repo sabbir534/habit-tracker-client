@@ -21,7 +21,7 @@ const Navbar = () => {
         <NavLink to="/">Home</NavLink>
       </li>
       <li>
-        <NavLink to="/browse-public">Browse Public Habits</NavLink>
+        <NavLink to="/public-habits">Browse Public Habits</NavLink>
       </li>
       {user && (
         <>

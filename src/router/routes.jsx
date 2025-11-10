@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import NotFound from "../pages/NotFound";
+import BrowsePublicHabits from "../pages/BrowsePublicHabits";
 
 export const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/public-habits",
+        element: <BrowsePublicHabits />,
       },
       {
         path: "/login",
