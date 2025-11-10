@@ -7,6 +7,8 @@ import NotFound from "../pages/NotFound";
 import BrowsePublicHabits from "../pages/BrowsePublicHabits";
 import AddHabit from "../pages/AddHabit";
 import PrivateRoute from "./PrivateRoute";
+import MyHabits from "../pages/MyHabits";
+import UpdateHabitPage from "../pages/UpdateHabitPage";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +28,22 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AddHabit />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/my-habits",
+        element: (
+          <PrivateRoute>
+            <MyHabits />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/update-habit/:id",
+        element: (
+          <PrivateRoute>
+            <UpdateHabitPage />
           </PrivateRoute>
         ),
       },
