@@ -9,6 +9,7 @@ import AddHabit from "../pages/AddHabit";
 import PrivateRoute from "./PrivateRoute";
 import MyHabits from "../pages/MyHabits";
 import UpdateHabitPage from "../pages/UpdateHabitPage";
+import HabitDetails from "../pages/HabitDetails";
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,14 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <UpdateHabitPage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/habits/:id", // The :id matches useParams()
+        element: (
+          <PrivateRoute>
+            <HabitDetails />
           </PrivateRoute>
         ),
       },
