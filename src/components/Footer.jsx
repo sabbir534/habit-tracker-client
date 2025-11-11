@@ -6,21 +6,23 @@ import {
   FaPhoneAlt,
   FaEnvelope,
 } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6"; // Using fa6 for the new X logo
-import { Link } from "react-router";
-import Logo from "../assets/logo.png"; // Import Link for internal navigation
+import { FaXTwitter } from "react-icons/fa6";
+// 1. CRITICAL FIX: Must import from 'react-router-dom'
+import { Link } from "react-router-dom";
+import Logo from "../assets/logo.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-linear-to-b from-blue-900 to-blue-700 text-blue-200 ">
+    // 2. THEME FIX: Replaced hard-coded gradient with semantic DaisyUI classes.
+    // 'bg-neutral' and 'text-neutral-content' create a dark footer
+    // that looks good in both light and dark modes.
+    <footer className="bg-neutral text-neutral-content">
       <div className="w-11/12 mx-auto px-4 py-16">
-        {/* Updated to 3 columns by removing Newsletter */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
-          {/* Section 1: Logo & Website Name */}
           <div className="mb-3 md:mb-0 flex flex-col items-center md:items-start">
-            <img src={Logo} alt="HabitTracker Logo" className="w-15 md:w-30 " />
+            {/* 3. CRITICAL FIX: Changed w-15/w-30 to valid Tailwind classes w-16/w-32 */}
+            <img src={Logo} alt="HabitTracker Logo" className="w-16 md:w-32" />
 
-            {/* I changed mt-2 to mt-1 to reduce the space */}
             <p className="text-sm md:text-2xl font-bold mt-1">HabitTracker</p>
 
             <p className="text-sm">
@@ -28,12 +30,13 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* Section 2: Contact Info */}
           <div className="flex flex-col items-center md:items-start">
-            <h4 className="text-xl font-bold text-white mb-4">Contact Info</h4>{" "}
+            {/* 4. THEME FIX: Removed 'text-white' to inherit from parent */}
+            <h4 className="text-xl font-bold mb-4">Contact Info</h4>{" "}
             <ul className="space-y-3">
               <li className="flex items-start">
-                <FaMapMarkerAlt className="mr-3 mt-1 text-blue-100" />{" "}
+                {/* 5. THEME FIX: Removed 'text-blue-100' */}
+                <FaMapMarkerAlt className="mr-3 mt-1" />{" "}
                 <span>
                   123 Habit St,
                   <br />
@@ -41,14 +44,15 @@ const Footer = () => {
                 </span>
               </li>
               <li className="flex items-center">
-                <FaPhoneAlt className="mr-3 text-blue-100" />
+                <FaPhoneAlt className="mr-3" />
                 <span>+1 (234) 567-890</span>
               </li>
               <li className="flex items-center">
-                <FaEnvelope className="mr-3 text-blue-100" />
+                <FaEnvelope className="mr-3" />
                 <a
                   href="mailto:contact@habittracker.com"
-                  className="hover:text-white transition-colors"
+                  // 6. THEME FIX: Changed hover color to 'primary'
+                  className="hover:text-primary transition-colors"
                 >
                   contact@habittracker.com
                 </a>
@@ -56,16 +60,16 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Section 3: Social Media Links */}
           <div className="flex flex-col items-center md:items-start">
-            <h4 className="text-xl font-bold text-white mb-4">Social</h4>
+            <h4 className="text-xl font-bold mb-4">Social</h4>
             <div className="flex space-x-4">
               <a
                 href="https://x.com"
                 aria-label="X (Twitter)"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-300 hover:text-white transition-colors"
+                // 7. THEME FIX: Changed text/hover colors
+                className="text-neutral-content/70 hover:text-primary transition-colors"
               >
                 <FaXTwitter size={22} />
               </a>
@@ -74,7 +78,7 @@ const Footer = () => {
                 aria-label="YouTube"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-300 hover:text-white transition-colors"
+                className="text-neutral-content/70 hover:text-primary transition-colors"
               >
                 <FaYoutube size={22} />
               </a>
@@ -83,7 +87,7 @@ const Footer = () => {
                 aria-label="Facebook"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-300 hover:text-white transition-colors"
+                className="text-neutral-content/70 hover:text-primary transition-colors"
               >
                 <FaFacebook size={22} />
               </a>
@@ -91,18 +95,19 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Sub-Footer: Copyright and Legal Links */}
-        <div className="mt-12 pt-8 border-t border-blue-600 flex flex-col md:flex-row justify-between items-center text-sm">
+        <div className="mt-12 pt-8 border-t border-neutral-focus flex flex-col md:flex-row justify-between items-center text-sm">
           {" "}
           <p className="text-center">
             &copy; {new Date().getFullYear()} HabitTracker. All rights reserved.
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
-            {/* Changed to React Router <Link> for SPA navigation */}
-            <Link to="/privacy" className="hover:text-white transition-colors">
+            <Link
+              to="/privacy"
+              className="hover:text-primary transition-colors"
+            >
               Privacy Policy
             </Link>
-            <Link to="/terms" className="hover:text-white transition-colors">
+            <Link to="/terms" className="hover:text-primary transition-colors">
               Terms & Conditions
             </Link>
           </div>

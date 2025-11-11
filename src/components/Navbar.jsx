@@ -1,9 +1,24 @@
-import React, { use } from "react";
-import { Link, NavLink } from "react-router";
+import React, { useContext, useState, useEffect } from "react";
+
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
+import { FaSun, FaMoon } from "react-icons/fa";
+
 const Navbar = () => {
-  const { user, loading, signOutUser } = use(AuthContext);
+  const { user, loading, signOutUser } = useContext(AuthContext);
+
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  const handleToggle = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
 
   const handleLogout = () => {
     signOutUser()
@@ -37,7 +52,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="w-11/12 mx-auto navbar bg-base-100 shadow-md">
+    <div className="navbar bg-base-100 shadow-md">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -63,7 +78,6 @@ const Navbar = () => {
             {navLinks}
           </ul>
         </div>
-
         <Link to="/" className="btn btn-ghost text-xl font-bold">
           HabitTracker
         </Link>
@@ -74,6 +88,18 @@ const Navbar = () => {
       </div>
 
       <div className="navbar-end">
+        <label className="swap swap-rotate btn btn-ghost btn-circle mr-2">
+          <input
+            type="checkbox"
+            onChange={handleToggle}
+            checked={theme === "dark"}
+          />
+
+          <FaSun className="swap-off h-5 w-5" />
+
+          <FaMoon className="swap-on h-5 w-5" />
+        </label>
+
         {loading ? (
           <span className="loading loading-spinner loading-md"></span>
         ) : user ? (
@@ -85,7 +111,7 @@ const Navbar = () => {
                   src={
                     user.photoURL
                       ? user.photoURL
-                      : "https://i.ibb.co.com/xtxz1tdS/default-User.jpg"
+                      : "https://i.ibb.co/xtxz1tdS/default-User.jpg"
                   }
                 />
               </div>
@@ -111,6 +137,7 @@ const Navbar = () => {
               Login
             </Link>
             <Link to="/register" className="btn btn-ghost btn-sm">
+              {" "}
               Register
             </Link>
           </div>

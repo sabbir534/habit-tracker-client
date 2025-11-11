@@ -63,7 +63,7 @@ const HeroSlider = () => {
                   Transform your daily routine. Start tracking your habits today
                   and build unstoppable streaks.
                 </p>
-                <Link to="/signup" className="btn btn-primary">
+                <Link to="/register" className="btn btn-primary">
                   Get Started
                 </Link>
               </div>
@@ -111,7 +111,7 @@ const HeroSlider = () => {
                   Get inspired by public habits, set your reminders, and turn
                   your aspirations into achievements.
                 </p>
-                <Link to="/browse-public" className="btn btn-primary">
+                <Link to="/public-habits" className="btn btn-primary">
                   Browse Habits
                 </Link>
               </div>
