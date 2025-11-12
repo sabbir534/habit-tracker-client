@@ -8,10 +8,8 @@ const calculateCurrentStreak = (completionHistory) => {
   const normalizedDates = new Set(
     completionHistory.map((d) => new Date(d).toISOString().split("T")[0])
   );
-
   let currentStreak = 0;
   const checkDate = new Date();
-
   while (normalizedDates.has(checkDate.toISOString().split("T")[0])) {
     currentStreak++;
     checkDate.setDate(checkDate.getDate() - 1);
@@ -23,17 +21,14 @@ const calculateProgressPercent = (completionHistory) => {
   const normalizedDates = new Set(
     completionHistory.map((d) => new Date(d).toISOString().split("T")[0])
   );
-
   let daysCompleted = 0;
   const checkDate = new Date();
-
   for (let i = 0; i < 30; i++) {
     if (normalizedDates.has(checkDate.toISOString().split("T")[0])) {
       daysCompleted++;
     }
     checkDate.setDate(checkDate.getDate() - 1);
   }
-
   return Math.round((daysCompleted / 30) * 100);
 };
 
@@ -62,8 +57,9 @@ const HabitDetails = () => {
       })
       .catch((err) => {
         setError("Failed to load habit details.");
-        toast.error("Failed to load habit. You may not be the owner.");
-        //console.error(err);
+        toast.error(
+          "Failed to load habit. You may not be the owner or it may not be public."
+        );
         navigate("/my-habits");
       })
       .finally(() => {
@@ -88,15 +84,19 @@ const HabitDetails = () => {
     [completionHistory]
   );
 
+  const isOwner = useMemo(() => {
+    if (!user || !habit) {
+      return false;
+    }
+    return user.email === habit.creatorEmail;
+  }, [user, habit]);
+
   const handleMarkComplete = async () => {
     try {
       const res = await axiosSecure.post(`/habits/${id}/complete`);
-
       setHabit(res.data);
-
       toast.success("Habit marked complete!");
     } catch (err) {
-      //console.error(err);
       toast.error(err.response?.data?.message || "Failed to mark complete");
     }
   };
@@ -108,7 +108,6 @@ const HabitDetails = () => {
       </div>
     );
   }
-
   if (error) {
     return (
       <div className="text-center py-20 text-error">
@@ -116,7 +115,6 @@ const HabitDetails = () => {
       </div>
     );
   }
-
   if (!habit) return null;
 
   return (
@@ -137,11 +135,8 @@ const HabitDetails = () => {
           <span className="badge badge-secondary badge-lg my-2">
             {habit.category}
           </span>
-
           <p className="py-4">{habit.description}</p>
-
           <div className="divider">Creator Info</div>
-
           <p className="font-semibold">
             Name:{" "}
             <span className="font-normal">
@@ -163,7 +158,6 @@ const HabitDetails = () => {
               🔥 {currentStreak} {currentStreak === 1 ? "Day" : "Days"}
             </div>
           </div>
-
           <div>
             <label className="label">
               <span className="label-text font-semibold">
@@ -184,7 +178,14 @@ const HabitDetails = () => {
             <button
               className="btn btn-primary btn-lg w-full"
               onClick={handleMarkComplete}
-              disabled={isCompletedToday}
+              disabled={isCompletedToday || !isOwner}
+              title={
+                !isOwner
+                  ? "You can only complete your own habits."
+                  : isCompletedToday
+                  ? "Already completed today!"
+                  : "Mark Complete"
+              }
             >
               {isCompletedToday ? "Completed Today!" : "Mark Complete"}
             </button>

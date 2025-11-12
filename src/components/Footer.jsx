@@ -7,20 +7,16 @@ import {
   FaEnvelope,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
-// 1. CRITICAL FIX: Must import from 'react-router-dom'
+
 import { Link } from "react-router-dom";
 import Logo from "../assets/logo.png";
 
 const Footer = () => {
   return (
-    // 2. THEME FIX: Replaced hard-coded gradient with semantic DaisyUI classes.
-    // 'bg-neutral' and 'text-neutral-content' create a dark footer
-    // that looks good in both light and dark modes.
     <footer className="bg-neutral text-neutral-content">
       <div className="w-11/12 mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center">
           <div className="mb-3 md:mb-0 flex flex-col items-center md:items-start">
-            {/* 3. CRITICAL FIX: Changed w-15/w-30 to valid Tailwind classes w-16/w-32 */}
             <img src={Logo} alt="HabitTracker Logo" className="w-16 md:w-32" />
 
             <p className="text-sm md:text-2xl font-bold mt-1">HabitTracker</p>
@@ -31,11 +27,9 @@ const Footer = () => {
           </div>
 
           <div className="flex flex-col items-center md:items-start">
-            {/* 4. THEME FIX: Removed 'text-white' to inherit from parent */}
             <h4 className="text-xl font-bold mb-4">Contact Info</h4>{" "}
             <ul className="space-y-3">
               <li className="flex items-start">
-                {/* 5. THEME FIX: Removed 'text-blue-100' */}
                 <FaMapMarkerAlt className="mr-3 mt-1" />{" "}
                 <span>
                   123 Habit St,
@@ -51,7 +45,6 @@ const Footer = () => {
                 <FaEnvelope className="mr-3" />
                 <a
                   href="mailto:contact@habittracker.com"
-                  // 6. THEME FIX: Changed hover color to 'primary'
                   className="hover:text-primary transition-colors"
                 >
                   contact@habittracker.com
@@ -68,7 +61,6 @@ const Footer = () => {
                 aria-label="X (Twitter)"
                 target="_blank"
                 rel="noopener noreferrer"
-                // 7. THEME FIX: Changed text/hover colors
                 className="text-neutral-content/70 hover:text-primary transition-colors"
               >
                 <FaXTwitter size={22} />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaFilter, FaChevronDown, FaTimes } from "react-icons/fa";
 import HabitCard from "../components/HabitCard";
 
 const containerVariants = {
@@ -61,9 +61,7 @@ const BrowsePublicHabits = () => {
         category === selectedCategory.toLowerCase();
 
       const matchesSearch =
-        !debouncedSearch ||
-        title.includes(debouncedSearch.toLowerCase()) ||
-        description.includes(debouncedSearch.toLowerCase());
+        !debouncedSearch || title.includes(debouncedSearch.toLowerCase());
 
       return matchesCategory && matchesSearch;
     });
@@ -78,45 +76,111 @@ const BrowsePublicHabits = () => {
         </p>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-4 mb-8 p-6 bg-base-200 rounded-lg shadow-md">
-        <div className="form-control flex-1">
-          <label className="label-text mb-2 font-semibold">
-            Search by keyword
-          </label>
-          <div className="join">
-            <input
-              type="text"
-              placeholder="e.g., 'Morning Run', 'Study'"
-              className="input input-bordered join-item w-full"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button className="btn btn-primary join-item" aria-label="Search">
-              <FaSearch />
-            </button>
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-6 mb-8 border border-gray-200 dark:border-gray-700">
+        <div className="flex flex-col lg:flex-row gap-6">
+          <div className="flex-1">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              <FaSearch className="inline mr-2" />
+              Search by keyword
+            </label>
+            <div className="relative group">
+              <input
+                type="text"
+                placeholder="e.g., 'Morning Run', 'Study', 'Fitness'"
+                className="w-full pl-12 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500">
+                <FaSearch />
+              </div>
+              <button
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-2 rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg"
+                aria-label="Search"
+              >
+                <FaSearch className="text-sm" />
+              </button>
+            </div>
           </div>
+
+          <motion.div
+            layout
+            className="flex-1 lg:max-w-xs"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              <FaFilter className="inline mr-2" />
+              Filter by category
+            </label>
+            <div className="relative">
+              <select
+                className="w-full pl-4 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md appearance-none cursor-pointer"
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                {categories.map((cat) => (
+                  <option
+                    key={cat}
+                    value={cat}
+                    className="bg-white dark:bg-gray-700"
+                  >
+                    {cat}
+                  </option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 pointer-events-none">
+                <FaChevronDown className="text-sm" />
+              </div>
+            </div>
+          </motion.div>
+
+          {(searchTerm || selectedCategory !== "All") && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+              className="flex items-end"
+            >
+              <button
+                onClick={() => {
+                  setSearchTerm("");
+                  setSelectedCategory("All");
+                }}
+                className="px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 font-medium shadow-sm hover:shadow-md flex items-center gap-2"
+              >
+                <FaTimes />
+                Clear Filters
+              </button>
+            </motion.div>
+          )}
         </div>
 
-        <motion.div
-          layout
-          className="form-control flex-1 md:max-w-xs"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <label className="label-text mb-2 font-semibold">
-            Filter by category
-          </label>
-          <select
-            className="select select-bordered w-full"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
+        {(searchTerm || selectedCategory !== "All") && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            transition={{ duration: 0.3 }}
+            className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600"
           >
-            {categories.map((cat) => (
-              <option key={cat}>{cat}</option>
-            ))}
-          </select>
-        </motion.div>
+            <div className="flex flex-wrap gap-2 items-center">
+              <span className="text-sm text-gray-600 dark:text-gray-400 font-medium">
+                Active filters:
+              </span>
+              {searchTerm && (
+                <div className="badge badge-primary bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700 px-3 py-1">
+                  Search: "{searchTerm}"
+                </div>
+              )}
+              {selectedCategory !== "All" && (
+                <div className="badge badge-primary bg-purple-100 dark:bg-purple-900 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700 px-3 py-1">
+                  Category: {selectedCategory}
+                </div>
+              )}
+            </div>
+          </motion.div>
+        )}
       </div>
 
       {loading && (

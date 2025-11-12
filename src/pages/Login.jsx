@@ -31,7 +31,7 @@ const Login = () => {
         navigate(from, { replace: true });
       })
       .catch((error) => {
-        console.error(error);
+        //console.error(error);
         if (error.code === "auth/invalid-credential") {
           toast.error("Invalid email or password.");
         } else {
@@ -52,7 +52,7 @@ const Login = () => {
         navigate(from, { replace: true });
       })
       .catch((error) => {
-        console.error(error);
+        //console.error(error);
         toast.error(error.message);
       })
       .finally(() => {

@@ -49,7 +49,7 @@ export const router = createBrowserRouter([
         ),
       },
       {
-        path: "/habits/:id", // The :id matches useParams()
+        path: "/habits/:id",
         element: (
           <PrivateRoute>
             <HabitDetails />

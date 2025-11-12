@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import useAxiosSecure from "../hook/useAxiosSecure";
 import { toast } from "react-hot-toast";
-import { Link } from "react-router";
 import Swal from "sweetalert2";
-import { FaEdit, FaTrashAlt, FaCheck } from "react-icons/fa";
+import { FaEdit, FaTrashAlt, FaCheck, FaFire, FaPlus } from "react-icons/fa";
 
 const calculateCurrentStreak = (completionHistory) => {
   if (!completionHistory || completionHistory.length === 0) {
@@ -54,7 +54,6 @@ const MyHabits = () => {
       })
       .catch((err) => {
         setError("Failed to load your habits.");
-        console.error(err);
       })
       .finally(() => {
         setLoading(false);
@@ -103,108 +102,177 @@ const MyHabits = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-[calc(100vh-200px)]">
-        <span className="loading loading-spinner loading-lg text-primary"></span>
+      <div className="min-h-[calc(100vh-200px)]  flex justify-center items-center">
+        <div className="text-center">
+          <span className="loading loading-spinner loading-lg text-primary"></span>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">
+            Loading your habits...
+          </p>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-center py-20 text-error">
-        <h2 className="text-2xl font-bold">{error}</h2>
+      <div className="min-h-[calc(100vh-200px)]  flex justify-center items-center">
+        <div className="text-center p-8 bg-white dark:bg-gray-800 rounded-xl shadow-xl max-w-md">
+          <h2 className="text-2xl font-bold text-error mb-4">Oops!</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">{error}</p>
+          <button
+            className="btn btn-primary"
+            onClick={() => window.location.reload()}
+          >
+            Try Again
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold text-center mb-10">My Habits</h1>
-
-      {habits.length === 0 ? (
-        <div className="text-center py-10">
-          <p className="text-lg">You haven't added any habits yet.</p>
-          <Link to="/add-habit" className="btn btn-primary mt-4">
-            Add a Habit
+    <div className="min-h-[calc(100vh-200px)]  py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-4xl font-bold text-gray-800 dark:text-white">
+            My Habits
+          </h1>
+          <Link to="/add-habit" className="btn btn-primary">
+            <FaPlus className="mr-2" />
+            Add New Habit
           </Link>
         </div>
-      ) : (
-        <div className="overflow-x-auto shadow-lg rounded-lg">
-          <table className="table table-zebra w-full">
-            <thead className="bg-base-200 text-lg">
-              <tr>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Current Streak</th>
-                <th>Created Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {habits.map((habit) => {
-                const currentStreak = calculateCurrentStreak(
-                  habit.completionHistory
-                );
-                const isCompletedToday = checkIfCompletedToday(
-                  habit.completionHistory
-                );
 
-                return (
-                  <tr key={habit._id} className="hover">
-                    <td>
-                      <Link
-                        to={`/habit/${habit._id}`}
-                        className="font-bold hover:underline"
-                      >
-                        {habit.title}
-                      </Link>
-                    </td>
-                    <td>
-                      <span className="badge badge-ghost">
-                        {habit.category}
-                      </span>
-                    </td>
-                    <td>
-                      🔥 {currentStreak} {currentStreak === 1 ? "Day" : "Days"}
-                    </td>
-                    <td>{new Date(habit.createdAt).toLocaleDateString()}</td>
-                    <td>
-                      <div className="flex gap-2">
-                        <button
-                          className="btn btn-success btn-sm text-white"
-                          onClick={() => handleMarkComplete(habit._id)}
-                          disabled={isCompletedToday}
-                          title={
-                            isCompletedToday ? "Completed!" : "Mark Complete"
-                          }
-                        >
-                          <FaCheck />
-                        </button>
-
-                        <Link
-                          to={`/update-habit/${habit._id}`}
-                          className="btn btn-info btn-sm text-white"
-                          title="Update"
-                        >
-                          <FaEdit />
-                        </Link>
-
-                        <button
-                          className="btn btn-error btn-sm text-white"
-                          onClick={() => handleDelete(habit._id)}
-                          title="Delete"
-                        >
-                          <FaTrashAlt />
-                        </button>
-                      </div>
-                    </td>
+        {habits.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
+              <div className="mb-6 flex justify-center">
+                <div className="w-24 h-24 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center">
+                  <FaPlus className="text-4xl text-purple-600 dark:text-purple-400" />
+                </div>
+              </div>
+              <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-3">
+                No habits yet
+              </h2>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
+                Start building better habits by adding your first one
+              </p>
+              <Link to="/add-habit" className="btn btn-primary">
+                <FaPlus className="mr-2" />
+                Add Your First Habit
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="table table-zebra w-full">
+                <thead className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white">
+                  <tr>
+                    <th className="text-left">Title</th>
+                    <th className="text-left">Category</th>
+                    <th className="text-center">Current Streak</th>
+                    <th className="text-left">Created Date</th>
+                    <th className="text-center">Actions</th>
                   </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      )}
+                </thead>
+                <tbody>
+                  {habits.map((habit) => {
+                    const currentStreak = calculateCurrentStreak(
+                      habit.completionHistory
+                    );
+                    const isCompletedToday = checkIfCompletedToday(
+                      habit.completionHistory
+                    );
+
+                    return (
+                      <tr
+                        key={habit._id}
+                        className={`hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                          isCompletedToday
+                            ? "bg-green-50 dark:bg-green-900/20"
+                            : ""
+                        }`}
+                      >
+                        <td>
+                          <Link
+                            to={`/habit/${habit._id}`}
+                            className="font-bold text-gray-800 dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+                          >
+                            {habit.title}
+                          </Link>
+                          {isCompletedToday && (
+                            <div className="badge badge-success badge-xs mt-1">
+                              <FaCheck className="mr-1" />
+                              Completed Today
+                            </div>
+                          )}
+                        </td>
+
+                        <td>
+                          <div className="badge badge-ghost bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                            {habit.category}
+                          </div>
+                        </td>
+
+                        <td>
+                          <div className="flex items-center justify-center">
+                            <div className="flex items-center text-orange-600 dark:text-orange-400 font-bold">
+                              <FaFire className="mr-1" />
+                              {currentStreak}
+                            </div>
+                          </div>
+                        </td>
+
+                        <td>
+                          <div className="text-gray-600 dark:text-gray-400">
+                            {new Date(habit.createdAt).toLocaleDateString()}
+                          </div>
+                        </td>
+
+                        <td>
+                          <div className="flex justify-center gap-2">
+                            <button
+                              className={`btn btn-sm ${
+                                isCompletedToday ? "btn-success" : "btn-outline"
+                              }`}
+                              onClick={() => handleMarkComplete(habit._id)}
+                              disabled={isCompletedToday}
+                              title={
+                                isCompletedToday
+                                  ? "Completed today!"
+                                  : "Mark Complete"
+                              }
+                            >
+                              <FaCheck />
+                            </button>
+
+                            <Link
+                              to={`/update-habit/${habit._id}`}
+                              className="btn btn-sm btn-info"
+                              title="Update"
+                            >
+                              <FaEdit />
+                            </Link>
+
+                            <button
+                              className="btn btn-sm btn-error"
+                              onClick={() => handleDelete(habit._id)}
+                              title="Delete"
+                            >
+                              <FaTrashAlt />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

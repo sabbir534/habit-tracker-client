@@ -66,7 +66,7 @@ const AuthProvider = ({ children }) => {
             setLoading(false);
           })
           .catch((err) => {
-            console.error("Could not get Firebase ID token:", err);
+            //console.error("Could not get Firebase ID token:", err);
             setLoading(false);
           });
       } else {

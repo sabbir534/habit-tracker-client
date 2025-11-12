@@ -47,7 +47,7 @@ const AddHabit = () => {
           throw new Error("Image upload failed");
         }
       } catch (err) {
-        console.error(err);
+        //console.error(err);
         toast.error("Image upload failed. Please try again.");
         setLoading(false);
         return;
@@ -75,7 +75,7 @@ const AddHabit = () => {
         throw new Error("Failed to add habit");
       }
     } catch (err) {
-      console.error(err);
+      //console.error(err);
       toast.error(err.message || "Failed to add habit.");
     } finally {
       setLoading(false);

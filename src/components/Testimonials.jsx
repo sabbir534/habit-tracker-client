@@ -40,7 +40,6 @@ const Testimonials = () => {
           whileInView="visible"
           viewport={{ once: true, amount: 0.3 }}
         >
-          {/* Testimonial Card 1 */}
           <motion.div
             variants={itemVariants}
             className="card bg-base-100 shadow-xl"
@@ -95,7 +94,6 @@ const Testimonials = () => {
             </div>
           </motion.div>
 
-          {/* Testimonial Card 3 */}
           <motion.div
             variants={itemVariants}
             className="card bg-base-100 shadow-xl"

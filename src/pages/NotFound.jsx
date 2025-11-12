@@ -1,8 +1,6 @@
-// src/pages/NotFound/NotFoundPage.jsx
-
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaHome } from "react-icons/fa"; // Requires 'npm install react-icons'
+import { FaHome } from "react-icons/fa";
 
 const NotFound = () => {
   return (
@@ -16,7 +14,6 @@ const NotFound = () => {
         It might have been moved or deleted.
       </p>
 
-      {/* This Link component acts as your "Home" button */}
       <Link to="/" className="btn btn-primary mt-10">
         <FaHome className="mr-2" />
         Go Back Home

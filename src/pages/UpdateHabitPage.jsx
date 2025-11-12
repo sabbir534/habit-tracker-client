@@ -50,7 +50,7 @@ const UpdateHabitPage = () => {
         });
       })
       .catch((err) => {
-        console.error(err);
+        //console.error(err);
         toast.error("Failed to load habit data.");
         navigate("/my-habits");
       })
@@ -86,7 +86,7 @@ const UpdateHabitPage = () => {
           throw new Error("Image upload failed");
         }
       } catch (err) {
-        console.error(err);
+        //console.error(err);
         toast.error("New image upload failed. Aborting update.");
         setSubmitting(false);
         return;
@@ -111,7 +111,7 @@ const UpdateHabitPage = () => {
         toast.error("No changes were made.");
       }
     } catch (err) {
-      console.error(err);
+      //console.error(err);
       toast.error("Failed to update habit.");
     } finally {
       setSubmitting(false);
