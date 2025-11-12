@@ -1,5 +1,3 @@
-// src/pages/MyHabits/MyHabits.jsx
-
 import React, { useState, useEffect, useMemo } from "react";
 import useAxiosSecure from "../hook/useAxiosSecure";
 import { toast } from "react-hot-toast";
@@ -7,18 +5,30 @@ import { Link } from "react-router";
 import Swal from "sweetalert2";
 import { FaEdit, FaTrashAlt, FaCheck } from "react-icons/fa";
 
-// --- Helper functions (copied from HabitDetails page for reuse) ---
-
 const calculateCurrentStreak = (completionHistory) => {
+  if (!completionHistory || completionHistory.length === 0) {
+    return 0;
+  }
+
   const normalizedDates = new Set(
     completionHistory.map((d) => new Date(d).toISOString().split("T")[0])
   );
+
   let currentStreak = 0;
   const checkDate = new Date();
+
+  const todayStr = checkDate.toISOString().split("T")[0];
+  const hasCompletedToday = normalizedDates.has(todayStr);
+
+  if (!hasCompletedToday) {
+    checkDate.setDate(checkDate.getDate() - 1);
+  }
+
   while (normalizedDates.has(checkDate.toISOString().split("T")[0])) {
     currentStreak++;
     checkDate.setDate(checkDate.getDate() - 1);
   }
+
   return currentStreak;
 };
 
@@ -29,15 +39,12 @@ const checkIfCompletedToday = (completionHistory) => {
   );
 };
 
-// --- Component ---
-
 const MyHabits = () => {
   const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const axiosSecure = useAxiosSecure();
 
-  // 1. Fetch data on component mount
   useEffect(() => {
     setLoading(true);
     axiosSecure
@@ -54,7 +61,6 @@ const MyHabits = () => {
       });
   }, [axiosSecure]);
 
-  // 2. Handle Habit Deletion
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -70,7 +76,6 @@ const MyHabits = () => {
           .delete(`/habits/${id}`)
           .then((res) => {
             if (res.data.deletedCount > 0) {
-              // Update UI instantly
               setHabits((prevHabits) => prevHabits.filter((h) => h._id !== id));
               Swal.fire("Deleted!", "Your habit has been deleted.", "success");
             }
@@ -82,12 +87,10 @@ const MyHabits = () => {
     });
   };
 
-  // 3. Handle Mark Complete
   const handleMarkComplete = (id) => {
     axiosSecure
       .post(`/habits/${id}/complete`)
       .then((res) => {
-        // Update UI instantly with the new habit data from server
         setHabits((prevHabits) =>
           prevHabits.map((h) => (h._id === id ? res.data : h))
         );
@@ -97,8 +100,6 @@ const MyHabits = () => {
         toast.error(err.response?.data?.message || "Failed to mark complete");
       });
   };
-
-  // --- Render Logic ---
 
   if (loading) {
     return (
@@ -130,7 +131,6 @@ const MyHabits = () => {
       ) : (
         <div className="overflow-x-auto shadow-lg rounded-lg">
           <table className="table table-zebra w-full">
-            {/* head */}
             <thead className="bg-base-200 text-lg">
               <tr>
                 <th>Title</th>
@@ -142,7 +142,6 @@ const MyHabits = () => {
             </thead>
             <tbody>
               {habits.map((habit) => {
-                // Calculate stats for each habit
                 const currentStreak = calculateCurrentStreak(
                   habit.completionHistory
                 );
@@ -171,7 +170,6 @@ const MyHabits = () => {
                     <td>{new Date(habit.createdAt).toLocaleDateString()}</td>
                     <td>
                       <div className="flex gap-2">
-                        {/* Mark Complete Button */}
                         <button
                           className="btn btn-success btn-sm text-white"
                           onClick={() => handleMarkComplete(habit._id)}
@@ -182,7 +180,7 @@ const MyHabits = () => {
                         >
                           <FaCheck />
                         </button>
-                        {/* Update Button */}
+
                         <Link
                           to={`/update-habit/${habit._id}`}
                           className="btn btn-info btn-sm text-white"
@@ -190,7 +188,7 @@ const MyHabits = () => {
                         >
                           <FaEdit />
                         </Link>
-                        {/* Delete Button */}
+
                         <button
                           className="btn btn-error btn-sm text-white"
                           onClick={() => handleDelete(habit._id)}
