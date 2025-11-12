@@ -23,7 +23,9 @@ const FeaturedHabits = () => {
   useEffect(() => {
     const fetchHabits = async () => {
       try {
-        const response = await fetch("http://localhost:3000/habits/featured");
+        const response = await fetch(
+          "https://habit-tracker-server-one.vercel.app/habits/featured"
+        );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

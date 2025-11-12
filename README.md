@@ -1,6 +1,6 @@
 # HabitTracker
 
-**Live Site URL:** [https://your-habittracker-live-site.netlify.app/](https://your-habittracker-live-site.netlify.app/)
+**Live Site URL:** [https://habit-tracker-client.web.app/](https://habit-tracker-client.web.app/)
 
 This is the client-side for the **HabitTracker** web application. It's a full-stack MERN project built to help users create, track, and manage their daily habits to build consistency and boost productivity.
 

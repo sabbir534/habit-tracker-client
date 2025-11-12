@@ -6,9 +6,14 @@ export default defineConfig({
   plugins: [
     react({
       babel: {
-        plugins: [["babel-plugin-react-compiler"],],
+        plugins: [["babel-plugin-react-compiler"]],
       },
     }),
-    tailwindcss()
+    tailwindcss(),
   ],
+  server: {
+    headers: {
+      "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    },
+  },
 });

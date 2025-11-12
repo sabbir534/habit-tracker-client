@@ -6,7 +6,7 @@ import { auth } from "../firebase/firebase.config";
 import { signOut } from "firebase/auth";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "https://habit-tracker-server-one.vercel.app",
 });
 
 const useAxiosSecure = () => {

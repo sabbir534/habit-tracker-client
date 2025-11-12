@@ -31,7 +31,9 @@ const BrowsePublicHabits = () => {
     const fetchAllPublicHabits = async () => {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:3000/habits/public");
+        const res = await fetch(
+          "https://habit-tracker-server-one.vercel.app/habits/public"
+        );
         if (!res.ok) throw new Error("Failed to fetch public habits");
         const data = await res.json();
         setAllHabits(data || []);
