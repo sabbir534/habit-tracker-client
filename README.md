@@ -23,7 +23,7 @@ The app features secure authentication, full CRUD operations for habits, and a c
 
 ## 🛠️ Tech Stack
 
-- **Framework:** React
+- **JavaScript library:** React
 - **Routing:** React Router
 - **Styling:** Tailwind CSS & DaisyUI
 - **Authentication:** Firebase
@@ -40,8 +40,8 @@ The app features secure authentication, full CRUD operations for habits, and a c
 1.  **Clone the repository:**
 
     ```bash
-    git clone [https://github.com/your-username/your-client-repo.git](https://github.com/your-username/your-client-repo.git)
-    cd your-client-repo
+    git clone [https://github.com/sabbir534/habit-tracker-client.git](https://github.com/sabbir534/habit-tracker-client.git)
+    cd habit-tracker-client
     ```
 
 2.  **Install dependencies:**
